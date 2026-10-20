@@ -1,0 +1,12 @@
+node_modules/
+.venv/
+.runtime/
+dist/
+dist-electron/
+build/
+release/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.wav
+*.mp3

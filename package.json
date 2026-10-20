@@ -1,0 +1,11 @@
+{
+  "name": "mixmaster-ai",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Mastering audio local avec moteur DSP déterministe",
+  "main": "dist-electron/main.js",
+  "scripts": {"dev":"vite", "build":"tsc --noEmit && tsc -p tsconfig.electron.json && vite build", "preview":"vite preview", "electron:dev":"tsc -p tsconfig.electron.json && concurrently -k \"vite --host 127.0.0.1\" \"wait-on http://127.0.0.1:5173 && cross-env VITE_DEV_SERVER_URL=http://127.0.0.1:5173 electron .\"", "electron:build":"powershell -NoProfile -ExecutionPolicy Bypass -File .\\build-windows.ps1"},
+  "dependencies": {"lucide-react":"^0.468.0", "react":"^18.3.1", "react-dom":"^18.3.1"},
+  "devDependencies": {"@types/node":"^22.10.2", "@types/react":"^18.3.12", "@types/react-dom":"^18.3.1", "@vitejs/plugin-react":"^4.3.4", "autoprefixer":"^10.4.20", "concurrently":"^9.1.0", "cross-env":"^7.0.3", "electron":"^33.2.1", "electron-builder":"^25.1.8", "postcss":"^8.4.49", "tailwindcss":"^3.4.16", "typescript":"~5.6.3", "vite":"^5.4.11", "wait-on":"^8.0.1"},
+  "build": {"appId":"com.mixmasterai.desktop", "productName":"MixMaster AI", "artifactName":"MixMaster-AI-Setup-${version}.${ext}", "directories":{"output":"release"}, "electronDist":".runtime/electron-dist", "files":["dist/**","dist-electron/**","package.json"], "extraResources":[{"from":"build/python/mixmaster-engine","to":"engine"}], "win":{"target":"nsis","signAndEditExecutable":false},"nsis":{"oneClick":false,"perMachine":false,"allowToChangeInstallationDirectory":true,"createDesktopShortcut":true}}
+}

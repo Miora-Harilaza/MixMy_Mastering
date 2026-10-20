@@ -1,0 +1,4 @@
+export {};
+ declare global { interface Window { mixmaster?: {openAudio:()=>Promise<string|null>;saveAudio:(name:string)=>Promise<string|null>;exportAudio:(source:string)=>Promise<boolean>;analyze:(input:string)=>Promise<AudioInfo>;preparePlayback:(input:string)=>Promise<string>;master:(args:{input:string;output:string;preset:string})=>Promise<MasterResult>;cancel:()=>Promise<boolean>;onProgress:(callback:(progress:{stage:string;percent:number})=>void)=>()=>void;} } }
+export interface AudioInfo {path:string;name:string;size_bytes:number;duration:number;sample_rate:number;channels:number;frames:number;peak_dbfs:number;rms_dbfs:number;lufs:number|null;bands:{bass:number;mids:number;highs:number};clipping:boolean;dynamic_range_db:number;waveform:number[];}
+export interface MasterResult {input:AudioInfo;output:AudioInfo;output_path:string;preset:string;warnings:string[];}
