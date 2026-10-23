@@ -19,10 +19,14 @@ Write-Host 'Installation des dépendances du moteur et de PyInstaller...' -Foreg
 & $python -m pip install -r (Join-Path $project 'requirements.txt') -r (Join-Path $project 'requirements-build.txt')
 if ($LASTEXITCODE -ne 0) { throw 'Installation des dépendances Python impossible.' }
 
+Write-Host 'Vérification du moteur vocal automatique...' -ForegroundColor Cyan
+& $python -c "import librosa, torch, torchaudio; from demucs.apply import apply_model; from demucs.pretrained import get_model"
+if ($LASTEXITCODE -ne 0) { throw 'Demucs, PyTorch, torchaudio et librosa doivent être importables avant la création de l’installateur.' }
+
 New-Item -ItemType Directory -Force -Path (Join-Path $project 'build\python') | Out-Null
 New-Item -ItemType Directory -Force -Path (Join-Path $project '.runtime\pyinstaller') | Out-Null
 Write-Host 'Construction du moteur Python autonome...' -ForegroundColor Cyan
-& $python -m PyInstaller --noconfirm --clean --onedir --console --name mixmaster-engine --distpath (Join-Path $project 'build\python') --workpath (Join-Path $project '.runtime\pyinstaller') --specpath (Join-Path $project '.runtime\pyinstaller') --paths $project --collect-all soundfile (Join-Path $project 'engine_entry.py')
+& $python -m PyInstaller --noconfirm --clean --onedir --console --name mixmaster-engine --distpath (Join-Path $project 'build\python') --workpath (Join-Path $project '.runtime\pyinstaller') --specpath (Join-Path $project '.runtime\pyinstaller') --paths $project --collect-all soundfile --collect-all demucs --collect-all librosa --collect-all torch --collect-all torchaudio (Join-Path $project 'engine_entry.py')
 if ($LASTEXITCODE -ne 0) { throw 'Construction du moteur Python autonome impossible.' }
 
 Write-Host 'Construction de l’application et de l’installateur Windows...' -ForegroundColor Cyan

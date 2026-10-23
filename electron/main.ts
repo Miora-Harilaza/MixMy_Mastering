@@ -11,7 +11,7 @@ let active: ChildProcessWithoutNullStreams | null = null;
 let previewDirectory: string | null = null;
 const previews = new Map<string,string>();
 const previewFiles = new Map<string,string>();
-const presets = ['Afrobeat Warm','Afrobeat Punchy','R&B Smooth','Vocal Clear','Rap & Hip-Hop','Pop Bright','Natural Master','Custom'];
+const presets = ['AUTO','Balanced','Afrobeat','R&B','Vocal Clarity','Warm & Smooth','Powerful','AI Music Polish','Afrobeat Warm','Afrobeat Punchy','R&B Smooth','Vocal Clear','Rap & Hip-Hop','Pop Bright','Natural Master','Afrobeat Vocal Studio','Custom'];
 protocol.registerSchemesAsPrivileged([{scheme:'mixmaster-preview',privileges:{standard:true,secure:true,corsEnabled:true,supportFetchAPI:true,stream:true}}]);
 function createWindow(){ win = new BrowserWindow({width:1440,height:960,minWidth:1080,minHeight:720,backgroundColor:'#080b14',title:'MixMaster AI',webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false}}); const dev=process.env.VITE_DEV_SERVER_URL; if(dev) void win.loadURL(dev); else void win.loadFile(path.join(__dirname,'../dist/index.html')); }
 app.whenReady().then(()=>{protocol.handle('mixmaster-preview',request=>{const url=new URL(request.url);if(url.hostname!=='preview')return new Response('Not found',{status:404});const id=path.basename(decodeURIComponent(url.pathname),'.wav');const file=previewFiles.get(id);if(!file||!existsSync(file))return new Response('Not found',{status:404});return net.fetch(pathToFileURL(file).href);});createWindow();}); app.on('window-all-closed',()=>{ if(process.platform!=='darwin')app.quit(); }); app.on('will-quit',()=>{if(previewDirectory)rmSync(previewDirectory,{recursive:true,force:true});});

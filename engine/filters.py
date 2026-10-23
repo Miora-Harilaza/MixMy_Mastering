@@ -2,7 +2,7 @@ import numpy as np
 from scipy.signal import butter, sosfiltfilt
 
 def highpass(audio: np.ndarray, sample_rate: int, cutoff: float = 24.0) -> np.ndarray:
-    cutoff=min(max(cutoff, 18), min(40, sample_rate*0.08))
+    cutoff=min(max(cutoff, 18), sample_rate*0.45)
     sos=butter(2,cutoff,btype='highpass',fs=sample_rate,output='sos')
     return sosfiltfilt(sos,audio,axis=0).astype(np.float32)
 
